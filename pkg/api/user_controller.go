@@ -91,6 +91,12 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := dao.DBConn.RemoveUserExpenses(user); err != nil {
+		log.Println(err)
+		u.RespondWithError(w, http.StatusBadRequest, "User doesn't exist or has already been deleted")
+		return
+	}
+
 	u.RespondWithJSON(w, http.StatusOK, "User deleted")
 }
 

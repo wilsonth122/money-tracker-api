@@ -13,12 +13,13 @@ import (
 
 // DAO struct
 type DAO struct {
-	Addresses      []string
-	Username       string
-	Password       string
-	AdminDatabase  string
-	AppDatabase    string
-	UserCollection string
+	Addresses         []string
+	Username          string
+	Password          string
+	AdminDatabase     string
+	AppDatabase  string
+	UserCollection    string
+	ExpenseCollection string
 }
 
 var DBConn = DAO{}
@@ -88,4 +89,51 @@ func (dao *DAO) UserExists(email string) (bool, error) {
 	}
 
 	return false, nil
+}
+
+// FindAllExpenses - Runs a find on the expenses collection
+// and returns all expense records relating to the user specified
+func (dao *DAO) FindAllExpenses(user string) ([]model.Expense, error) {
+	var expenses []model.Expense
+
+	err := db.C(dao.ExpenseCollection).Find(bson.M{"userID": user}).All(&expenses)
+
+	return expenses, err
+}
+
+// FindExpenseByID - Runs a find on the expenses collection and returns the first expense with the id
+func (dao *DAO) FindExpenseByID(id string) (model.Expense, error) {
+	var expense model.Expense
+
+	err := db.C(dao.ExpenseCollection).FindId(bson.ObjectIdHex(id)).One(&expense)
+
+	return expense, err
+}
+
+// InsertExpense - Inserts an expense record into the expenses collection
+func (dao *DAO) InsertExpense(expense model.Expense) error {
+	err := db.C(dao.ExpenseCollection).Insert(&expense)
+
+	return err
+}
+
+// RemoveExpenseByID - Removes an expense by id
+func (dao *DAO) RemoveExpenseByID(id string) error {
+	err := db.C(dao.ExpenseCollection).RemoveId(bson.ObjectIdHex(id))
+
+	return err
+}
+
+// UpdateExpense - Updates an expense record in the expenses collection
+func (dao *DAO) UpdateExpense(expense model.Expense) error {
+	err := db.C(dao.ExpenseCollection).UpdateId(expense.ID, &expense)
+
+	return err
+}
+
+// RemoveUserExpenses - Removes all expenses relating to a user
+func (dao *DAO) RemoveUserExpenses(email string) error {
+	_, err := db.C(dao.ExpenseCollection).RemoveAll(bson.M{"userID": email})
+
+	return err
 }

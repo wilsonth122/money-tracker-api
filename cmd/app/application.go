@@ -31,6 +31,7 @@ func init() {
 	dao.DBConn.AdminDatabase = conf.Database.AdminDatabase
 	dao.DBConn.AppDatabase = conf.Database.AppDatabase
 	dao.DBConn.UserCollection = conf.Database.UserCollection
+	dao.DBConn.ExpenseCollection = conf.Database.ExpenseCollection
 	dao.DBConn.Connect()
 }
 
@@ -52,6 +53,11 @@ func main() {
 	r.HandleFunc("/api/user/new", api.CreateUser).Methods("POST")
 	r.HandleFunc("/api/user/login", api.LoginUser).Methods("POST")
 	r.HandleFunc("/api/user/delete", api.DeleteUser).Methods("DELETE")
+	r.HandleFunc("/api/expenses", api.AllExpenses).Methods("GET")
+	r.HandleFunc("/api/expenses/{id}", api.GetExpense).Methods("GET")
+	r.HandleFunc("/api/expenses", api.CreateExpense).Methods("POST")
+	r.HandleFunc("/api/expenses", api.UpdateExpense).Methods("PUT")
+	r.HandleFunc("/api/expenses/{id}", api.DeleteExpense).Methods("DELETE")
 
 	handler := c.Handler(r)
 
