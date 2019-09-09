@@ -47,7 +47,6 @@ func main() {
 		AllowedOrigins: conf.API.AllowedOrigins,
 		AllowedMethods: conf.API.AllowedMethods,
 		AllowedHeaders: conf.API.AllowedHeaders,
-		Debug:          true,
 	})
 
 	r.HandleFunc("/api/user/new", api.CreateUser).Methods("POST")
