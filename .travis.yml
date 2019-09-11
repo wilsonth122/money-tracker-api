@@ -1,0 +1,24 @@
+language: go
+go: 1.12
+env:
+  global:
+  - PORT=8080
+  - ALLOWED_ORIGINS=https://money-tracker-249719.appspot.com,http://localhost,capacitor://localhost,https://master.d2yx4npwnysii2.amplifyapp.com
+  - ALLOWED_METHODS=GET,POST,PUT,DELETE,OPTIONS
+  - ALLOWED_HEADERS=Accept,Authorization,Content-Type
+  - DATABASE_ADDRESSES=money-tracker-shard-00-00-ulgbg.gcp.mongodb.net:27017,money-tracker-shard-00-01-ulgbg.gcp.mongodb.net:27017,money-tracker-shard-00-02-ulgbg.gcp.mongodb.net:27017
+  - DATABASE_USERNAME=money-tracker-api
+  - ADMIN_DATABASE=admin
+  - APP_DATABASE=money_tracker_db
+  - USER_COLLECTION=users
+  - EXPENSE_COLLECTION=expenses
+  - secure: RPMfVopZ/0qRT24e8lxwRDiiZxkUJsHNzjGF/7BxT0ZC5yD5rB3SmtXioOwJtjIqCrP2CU1B3GYQuG1KwC2V18Dx8QLzb4iU4r1eH/B8czC1aGKJTQRLtZl54E1WR2VxGIN5FpDdrCh0n1ck/glKWz4Srh/tKG+jOjDoVZhDKHw8tQljUwR3KDAduj92Zzlj06iGRPsg64hicaGTUxsKxldBCleUr2J6uxpQVuWoPePlCWN1lrFGvAnv94JdQBTOgKIfV25+75A6PfBF52EZugzQR36nqhl5JxwGeie5/9KKAOqSmdp5tOwWyOJVo28FGFxiyshAjm1Ua8ZqWzrA586UdNP/U4PT9mOK6rdhI1Xu6g1KSTaQyko9bKnPG2p0xtY3fUCyOn2TlbmTZu0dDnKMdOsz+UAARr13h2nzUv1ZTq8OqnkK3MhEdjRFym00FL6OWtvjI3cSAFHsWjmGKzvSvoy5q2OgcYFibRzeJ+X1T7agPHeV4PeJ4IGcHhhSGxqqdQhv/Ph95vvrot3ciEPV9b0+veA+9WEdTPNMkeYvYmYha4KjHNF9Mfh0m2JtxKHyJtKXrGdd8qyLrYu/7QmJBBPk9tFSm+Yr2CNR58T3wre5LaO6Epsv3nyRtSQhZPBiT5bgwf6cMc2BqR0oCVHwofxPj3trBBYePEGBdlc=
+  - secure: xa14RHiqXBOOeQ/CD8XZ3Sb3AxG/vZePf+tpNiSRosrqfds3tlARAsPLy/DVvX2485WMY3fkRbmmJq0iUG+DRV4YCrSLTJzeekkyr8wsNZ+dP85GJIKSgyyfksR+SquK8wSuucM6EhK8kDI1pkO1HITHY1cVrNjZBqqpC2OZShU+LWpETTh8Ruy//t+RSHcIoDNbh6n5543SoLumHSD9ejAzZlp4jEnfGxen3gH1Xj1gD5mMqV0v+/bDc+/ORkGhEuBEYFhI3HplgHBkfCt/FsUTzYlqw/cantydQ4O9SYuSWLpd4Ws/ojXo+akTOHarMQbWMjltRIEyk/aqfR6gCh9v02SJDHQXmLfKyfpztrtc0hmWkPQXUQH+Ndf26o7RyR2/9I1PYxE8fUWDfBAf27btgWmg76jf5DQriWZCs/RpE2LCCPJCVG99a20sA1FlTqPxcSqA6QusjOwmG/hmaDsuTFOpmYTuvG05nWioKj3PqLZCQsHrINYNK39cScee2FEouoshVWQGCxshqzu6E2+eMFxdjrmor5zp6kL+FFOOTt6QzdNVsnPcAdsehuQBq3XXFiJmNU4pqvoOd6/5VYO30iJxWDmbX2HWp6tgYfLMpCcBEtVSdYYqsWJww3XwrABZPuZaf3UO5H0eXAc+LM0eF7ObVRJky8pW+Dbz/jQ=
+  - secure: z4qlD2iVGuEMUIf0vjA5FOxp6MiFCWSqLn4VxHlAdFujpcxo4ORJEqm93HJGtahsTCuic4ulIYIh/8wCMAKWMUHSnCSa33hUdXzYqH9I0xQOIQYInzJgfBuVxCGYQF/x5mxcW9z4yddTIZy9EHlI4iYhfz5heUtQ2HtiDb5uYMMQ+V9QeRyk7D8OODKf/3H94Vke0+I2nbxl7RXc5Th1Ft7OkxCpzU37O9g9dGbHHWcb+9RZBFrYAmph0Y+Sf6eDYYc9Y5vlcDmU77/WP5EqKdVHEiL9VbiWqF6STILBecQMcVvFcKmH9BxCrHMWq97xArQJGiMe0PjSewT/wx9kllOVHTr3bOxFoois1WnMPRLUS1hacLg6WnXe2C3Cf74uPB3zrzVktZERbUuJyZ1o3Oze6HsuZ3Z41rjFDq89ARrGa+DCj3tBVXUlOMr/OeqTEYfvxI18sNaF+ifa1na7uKHcPTjpYn2UlON/z+bn/MEY66+dI/dmiqPJSPeLcDeEdPPOEyIZI7h6gmiLx2qqwiXdB4A36zYwqy/nRcrLA/Vg7Q1yac5MsY7HLMjP4C/3wTeIZrowLVjoel2UOsqHZvhXxSJPX6LOqEy1KKDQ+DNIx1TJJ2CTm2GZQZ51SJ3tB6Jv/EHKhroFWmIXTV35CE4soMU9PvL4VjmMaMfKNIE=
+before_install:
+- echo $gae_file_password | gpg --batch --yes --passphrase-fd 0 client-secret.json.gpg
+deploy:
+  provider: gae
+  keyfile: client-secret.json
+  project: money-tracker-249719
+  config: cmd/gae/app.yaml
