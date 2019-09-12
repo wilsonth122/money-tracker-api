@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 	"github.com/wilsonth122/money-tracker-api/pkg/dao"
 )
 
-func init() {
+func Setup() {
 	// Load config
 	e := godotenv.Load()
 	if e != nil {
@@ -35,7 +35,7 @@ func init() {
 	dao.DBConn.Connect()
 }
 
-func main() {
+func Start() {
 	conf := config.New()
 
 	r := mux.NewRouter()
@@ -47,7 +47,6 @@ func main() {
 		AllowedOrigins: conf.API.AllowedOrigins,
 		AllowedMethods: conf.API.AllowedMethods,
 		AllowedHeaders: conf.API.AllowedHeaders,
-		Debug:          true,
 	})
 
 	r.HandleFunc("/api/user/new", api.CreateUser).Methods("POST")
