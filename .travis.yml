@@ -16,3 +16,4 @@ deploy:
   keyfile: ../../client-secret.json
   project: money-tracker-249719
   config: app.yaml
+  skip_cleanup: true
