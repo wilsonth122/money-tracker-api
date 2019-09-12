@@ -12,7 +12,7 @@ before_deploy:
 - echo TOKEN_PASSWORD=$TOKEN_PASSWORD >> .env
 deploy:
   provider: gae
-  keyfile: ../../client-secret.json
+  keyfile: client-secret.json
   project: money-tracker-249719
   config: app.yaml
   skip_cleanup: true
