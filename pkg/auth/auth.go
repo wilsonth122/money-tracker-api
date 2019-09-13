@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	jwt "github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
@@ -15,7 +16,7 @@ import (
 // JwtAuthentication - Authenticates the token in the header of a request
 var JwtAuthentication = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		notAuth := []string{"/api/user/new", "/api/user/login"}
+		notAuth := []string{"/api/user/new", "/api/user/login", "/api/stream/expenses"}
 		requestPath := r.URL.Path
 
 		// Check if request does not need authentication, serve the request if it doesn't need it
@@ -43,33 +44,43 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		}
 
 		// Grab the token part, what we are truly interested in
-		tokenPart := splitted[1]
-		tk := model.Token{}
-
-		token, err := jwt.ParseWithClaims(tokenPart, &tk, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("TOKEN_PASSWORD")), nil
-		})
-
-		// Malformed token, returns with http code 403
+		tokenStr := splitted[1]
+		log.Println(tokenStr)
+		token, err := ParseToken(tokenStr)
 		if err != nil {
 			u.RespondWithError(w, http.StatusForbidden, err.Error())
 			return
 		}
 
-		// Token is invalid, maybe not signed on this server
-		if !token.Valid {
-			u.RespondWithError(w, http.StatusForbidden, "Token is not valid")
-			return
-		}
-
 		// Useful for monitoring
-		log.Println("User " + tk.UserID)
+		log.Println("User " + token.UserID)
 
 		// Everything went well,
 		// proceed with the request and set the caller to the user retrieved from the parsed token
-		ctx := context.WithValue(r.Context(), "user", tk.UserID)
+		ctx := context.WithValue(r.Context(), "user", token.UserID)
 		r = r.WithContext(ctx)
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+// ParseToken - Parses and encrypted token string into a token
+func ParseToken(tokenStr string) (model.Token, error) {
+	tk := model.Token{}
+
+	token, err := jwt.ParseWithClaims(tokenStr, &tk, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("TOKEN_PASSWORD")), nil
+	})
+
+	// Malformed token
+	if err != nil {
+		return tk, err
+	}
+
+	// Token is invalid, maybe not signed on this server
+	if !token.Valid {
+		return tk, errors.New("Token is not valid")
+	}
+
+	return tk, nil
 }
