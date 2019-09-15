@@ -45,7 +45,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 
 		// Grab the token part, what we are truly interested in
 		tokenStr := splitted[1]
-		log.Println(tokenStr)
 		token, err := ParseToken(tokenStr)
 		if err != nil {
 			u.RespondWithError(w, http.StatusForbidden, err.Error())
