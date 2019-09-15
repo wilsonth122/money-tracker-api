@@ -11,8 +11,15 @@ import (
 
 	"github.com/wilsonth122/money-tracker-api/pkg/dao"
 	"github.com/wilsonth122/money-tracker-api/pkg/model"
+	"github.com/wilsonth122/money-tracker-api/pkg/stream"
 	u "github.com/wilsonth122/money-tracker-api/pkg/utils"
 )
+
+// StreamAllExpenses - Endpoint to stream all expenses instead of just get them once
+func StreamAllExpenses(w http.ResponseWriter, r *http.Request) {
+	log.Println("Websocket connection")
+	stream.WsHandler(w, r)
+}
 
 // AllExpenses - Endpoint to retrieve all expenses
 func AllExpenses(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +72,9 @@ func CreateExpense(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Send new expense to expense stream
+	go stream.Writer(&expense)
+
 	u.RespondWithJSON(w, http.StatusCreated, expense)
 }
 
@@ -87,6 +97,9 @@ func UpdateExpense(w http.ResponseWriter, r *http.Request) {
 		u.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	// Send updated expense to expense stream
+	go stream.Writer(&expense)
 
 	u.RespondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 }
